@@ -8,7 +8,7 @@ working_dir=`pwd`
 #Get namesapce variable
 tenant=`awk '{print $NF}' $working_dir/tenant_export`
 
-read -p 'Enter path tp the jmx file ' jmx
+read -p 'Enter path to the jmx file ' jmx
 
 if [ ! -f "$jmx" ];
 then
