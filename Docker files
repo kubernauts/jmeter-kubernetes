@@ -7,7 +7,7 @@ First of all the jmeter base image needs to be created from the opend-jdk image,
 		FROM openjdk:8-jre-slim
 		MAINTAINER Kubernauts-lab
 		
-		ARG JMETER_VERSION=3.3
+		ARG JMETER_VERSION=4.0
 		
 		RUN apt-get clean && \
 		apt-get update && \
@@ -55,6 +55,7 @@ First of all the jmeter base image needs to be created from the opend-jdk image,
 		EXPOSE 1099 50000
 		
 		ENTRYPOINT $JMETER_HOME/bin/jmeter-server \
+		-Dserver.rmi.ssl.disable=true \
 		-Dserver.rmi.localport=50000 \
 		-Dserver_port=1099
 
