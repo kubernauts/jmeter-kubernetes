@@ -1,7 +1,5 @@
 #!/bin/bash
 #Script writtent to stop a running jmeter master test
-#This will stop the process on the master and also kill the jmeter slave pods
-#The slave pods will be created automatically
 #Kindly ensure you have the necessary kubeconfig
 
 working_dir=`pwd`
