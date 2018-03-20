@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta2 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: jmeter-reporter
+  labels:
+    jmeter_mode: reporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      jmeter_mode: reporter
+  template:
+    metadata:
+      labels:
+        jmeter_mode: reporter
+    spec:
+      containers:
+      - name: jmreporter
+        image: kubernautslabs/jmeter-reporter
+        ports:
+        - containerPort: 8686
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmeter-reporter
+  labels:
+    jmeter_mode: reporter
+spec:
+  ports:
+    - port: 8686
+      targetPort: 8686
+  selector:
+    jmeter_mode: reporter
+  type: NodePort
