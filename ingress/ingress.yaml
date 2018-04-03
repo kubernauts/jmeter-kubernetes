@@ -9,7 +9,7 @@ spec:
   tls:
     - secretName: traefik-cert
   rules:
-  - host: ingress.k8s.kubernauts.de
+  - host: ingress.kubernauts
     http:
       paths:
       - path: /grafana
