@@ -21,7 +21,7 @@ spec:
         args: [ "while true; do sleep 30; done;" ]
         volumeMounts:
           - name: loadtest
-            mountPath: /root/load_test
+            mountPath: /load_test
             subPath: "load_test"
         ports:
         - containerPort: 60000

@@ -1,4 +1,4 @@
-#/bin/bash
+#!/usr/bin/env bash
 #Script created to launch Jmeter tests directly from the current terminal without accessing the jmeter master pod.
 #It requires that you supply the path to the jmx file
 #After execution, test script jmx file may be deleted from the pod itself but not locally.
@@ -25,4 +25,4 @@ kubectl cp $jmx -n $tenant $master_pod:/$jmx
 
 ## Echo Starting Jmeter load test
 
-kubectl exec -ti -n $tenant $master_pod -- /root/load_test $jmx
+kubectl exec -ti -n $tenant $master_pod -- /jmeter/load_test $jmx

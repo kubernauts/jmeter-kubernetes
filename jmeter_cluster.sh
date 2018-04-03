@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Create multiple Jmeter namespaces on an existing kuberntes cluster
 #Started On January 23, 2018
 
