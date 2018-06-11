@@ -1,5 +1,5 @@
 # jmeter-kubernetes
 
-Please follow the guide "Load Testing As A Service With Jmeter On Kubernetes" via medium:
+Please follow the guide "Load Testing Jmeter On Kubernetes" on our medium blog post:
 
 https://goo.gl/mkoX9E
