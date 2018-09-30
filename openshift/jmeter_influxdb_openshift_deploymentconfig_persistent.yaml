@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+    creationTimestamp: null
+    labels:
+      metrics: influxdb
+    name: influxdb  
+spec:
+    replicas: 1
+    selector:
+      metrics: influxdb
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          metrics: influxdb
+      spec:
+        containers:
+        - env:
+          - name: INFLUXDB_UDP_ENABLED
+            value: "true"
+          - name: INFLUXDB_UDP_BIND_ADDRESS
+            value: :8087
+          - name: INFLUXDB_UDP_DATABASE
+            value: udp
+          image: influxdb
+          imagePullPolicy: Always
+          name: influxdb
+          ports:
+          - containerPort: 8086
+            protocol: TCP
+          - containerPort: 8087
+            protocol: UDP
+          - containerPort: 8083
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /var/lib/influxdb
+            name: influxdb-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        volumes:
+          - name: influxdb-data
+            emptyDir: {}
+      volumeClaimTemplates:
+            - metadata:
+                name: datadir
+                labels:
+                  app: influxdb-data
+                annotations:
+                  volume.beta.kubernetes.io/storage-class: glusterfs
+              spec:
+                accessModes:
+                - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+  

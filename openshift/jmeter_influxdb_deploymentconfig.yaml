@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: influxdb-jmeter
+  name: influxdb-jmeter
+spec:
+  replicas: 1
+  selector:
+    app: influxdb-jmeter
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: influxdb-jmeter
+    spec:
+      containers:
+      - image: cloudssky/influxdb:latest
+        name: influxdb
+        imagePullPolicy: Always
+        name: influxdb-jmeter
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/influxdb
+          - name: config-meta
+            mountPath: /var/lib/influxdb/meta
+            subPath: meta
+          - name: config-data
+            mountPath: /var/lib/influxdb/data
+            subPath: data
+          - name: config-wal
+            mountPath: /var/lib/influxdb/wal
+            subPath: wal
+        ports:
+            - containerPort: 8083
+              name: influx
+            - containerPort: 8086
+              name: api
+            - containerPort: 2003
+              name: graphite
+      volumes:
+      - name: config-volume
+        configMap:
+         name: influxdb-config
+      - name: config-meta
+      - name: config-data
+      - name: config-wal
+
+ 

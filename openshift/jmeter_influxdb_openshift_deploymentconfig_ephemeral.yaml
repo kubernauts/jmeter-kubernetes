@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+    creationTimestamp: null
+    labels:
+      app: influxdb-jmeter
+    name: influxdb  
+spec:
+    replicas: 1
+    selector:
+      app: influxdb-jmeter
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: influxdb-jmeter
+      spec:
+        containers:
+        - env:
+          - name: INFLUXDB_UDP_ENABLED
+            value: "true"
+          - name: INFLUXDB_UDP_BIND_ADDRESS
+            value: :8087
+          - name: INFLUXDB_UDP_DATABASE
+            value: udp
+          image: influxdb
+          imagePullPolicy: Always
+          name: influxdb
+          ports:
+            - containerPort: 8083
+              name: influx
+            - containerPort: 8086
+              name: api
+            - containerPort: 2003
+              name: graphite
+          volumeMounts:
+          - mountPath: /var/lib/influxdb
+            name: influxdb-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        volumes:
+          - name: influxdb-data
+            emptyDir: {}
+          - name: config-volume
+            configMap:
+            name: influxdb-config
+  

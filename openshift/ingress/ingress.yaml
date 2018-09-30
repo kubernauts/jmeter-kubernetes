@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jmeter-ingress
+  annotations:
+    traefik.frontend.rule.type: PathPrefixStrip
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  tls:
+    - secretName: traefik-cert
+  rules:
+  - host: ingress.kubernauts
+    http:
+      paths:
+      - path: /grafana
+        backend:
+          serviceName: jmeter-grafana
+          servicePort: 3000
+      - path: /reporter
+        backend:
+          serviceName: jmeter-reporter
+          servicePort: 8686

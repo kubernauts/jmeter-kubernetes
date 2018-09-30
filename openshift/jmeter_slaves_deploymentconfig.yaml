@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    jmeter_mode: slaves
+  name: jmeter-slaves
+spec:
+  replicas: 3
+  selector:
+    jmeter_mode: slaves
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        jmeter_mode: slaves
+    spec:
+      containers:
+      - image: cloudssky/jmeter-slave
+        imagePullPolicy: Always
+        name: jmeter-slave
+        ports:
+        - containerPort: 50000
+          protocol: TCP
+        - containerPort: 1099
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
