@@ -11,6 +11,7 @@ N.B.: this implementation was tested on Kubernetes 1.9, 1.10, and 1.11 and OpenS
 ## TL;DR
 
 ```bash
+./dockerimages.sh
 ./jmeter_cluster_create.sh
 ./dashboard.sh
 ./start_test.sh

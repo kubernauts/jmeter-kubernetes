@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: jmmaster
-        image: kubernautslabs/jmeter_master
+        image: kubernautslabs/jmeter-master:latest
+        imagePullPolicy: IfNotPresent
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "while true; do sleep 30; done;" ]
         volumeMounts:
