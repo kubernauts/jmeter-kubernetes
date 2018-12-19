@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: jmslave
-        image: kubernautslabs/jmeter-slave:latest
+        image: kubernautslabs/jmeter_slave:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 1099
