@@ -1,11 +1,10 @@
-apiVersion: apps/v1beta2
-kind: Deployment
+apiVersion: extensions/v1beta1
+kind: DaemonSet
 metadata:
   name: jmeter-slaves
   labels:
     jmeter_mode: slave
 spec:
-  replicas: 2 
   selector:
     matchLabels:
       jmeter_mode: slave
