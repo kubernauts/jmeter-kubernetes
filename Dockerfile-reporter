@@ -7,7 +7,7 @@ RUN make build
 
 # create image
 FROM debian:stretch
-RUN PACKAGES="wget libswitch-perl" \
+RUN PACKAGES="wget libswitch-perl texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra ca-certificates" \
     && apt-get update \
     && apt-get install -y -qq $PACKAGES --no-install-recommends \
     && wget -qO- http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz |tar xz \
