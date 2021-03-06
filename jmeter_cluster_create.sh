@@ -23,8 +23,13 @@ kubectl get namespaces | grep -v NAME | awk '{print $1}'
 
 echo
 
-echo "Enter the name of the new tenant unique name, this will be used to create the namespace"
-read tenant
+tenant="$1"
+if [ -z "$tenant" ]
+then
+  echo "Enter the name of the new tenant unique name, this will be used to create the namespace"
+  read tenant
+fi
+
 echo
 
 #Check If namespace exists
