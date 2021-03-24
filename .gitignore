@@ -1,1 +1,9 @@
 tenant_export
+
+#User Defined
+*.log
+*.hprof
+*.code-workspace
+gitign_*
+*_gitign
+*_gitign_*
