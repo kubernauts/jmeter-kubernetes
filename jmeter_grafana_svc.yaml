@@ -6,8 +6,8 @@ metadata:
     app: jmeter-grafana
 spec:
   ports:
-    - port: 3000
+    - port: 80
       targetPort: 3000
   selector:
     app: jmeter-grafana
-  type: NodePort
+  type: LoadBalancer
