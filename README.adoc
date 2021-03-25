@@ -40,7 +40,7 @@ Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
     .. Set up the link from the dashboard to the reporter service in Graphana GUI:
 
     ----
-    {reporter NodePort IP}:8686/api/v5/report/ltaas
+    http://{reporter NodePort IP}:8686/api/v5/report/ltaas
     ----
 
 
