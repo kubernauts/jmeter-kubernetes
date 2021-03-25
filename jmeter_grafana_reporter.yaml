@@ -30,8 +30,8 @@ metadata:
     jmeter_mode: reporter
 spec:
   ports:
-    - port: 8686
+    - port: 80
       targetPort: 8686
   selector:
     jmeter_mode: reporter
-  type: NodePort
+  type: LoadBalancer

@@ -5,7 +5,7 @@
 Kubernetes > 1.16
 
 [.line-through]#OpenShift version > 3.5#
-Implementing on Google Kubernete Engine on `dev_GKE` branch.
+Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
 
 == Quick Start Guide
 
@@ -28,6 +28,13 @@ Implementing on Google Kubernete Engine on `dev_GKE` branch.
     ----
 
 . Import the JMeter dashboard (`GrafanaJMeterTemplate.json`) in Graphana UI.
+
+. Setup a report on Graphana:
+
+    ----
+    ./reporter.sh
+    ----
+
 
 . Start the load test.
 
