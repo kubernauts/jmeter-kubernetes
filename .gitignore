@@ -7,3 +7,4 @@ tenant_export
 gitign_*
 *_gitign
 *_gitign_*
+.vscode

@@ -1,0 +1,41 @@
+= JMeter Cluster Support for Kubernetes
+
+== Prerequisites
+
+Kubernetes > 1.16
+
+[.line-through]#OpenShift version > 3.5#
+Implementing on Google Kubernete Engine on `dev_GKE` branch.
+
+== Quick Start Guide
+
+. Build docker image for the first use.
+
+    ----
+    ./dockerimages.sh
+    ----
+
+. Run the following for (re)deployments:
+
+    ----
+    ./jmeter_cluster_create.sh
+    ----
+
+. Setup influxdb and Graphana:
+
+    ----
+    ./dashboard.sh
+    ----
+
+. Import the JMeter dashboard (`GrafanaJMeterTemplate.json`) in Graphana UI.
+
+. Start the load test.
+
+    ----
+    ./start_test.sh
+    ----
+
+Please follow the guide "Load Testing Jmeter On Kubernetes" on the original medium blog post:
+
+https://goo.gl/mkoX9E
+
