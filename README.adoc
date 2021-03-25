@@ -30,9 +30,17 @@ Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
 . Import the JMeter dashboard (`GrafanaJMeterTemplate.json`) in Graphana UI.
 
 . Setup a report on Graphana:
+    
+    .. Spin up the reporter node and service:
 
     ----
     ./reporter.sh
+    ----
+    
+    .. Set up the link from the dashboard to the reporter service in Graphana GUI:
+
+    ----
+    {reporter NodePort IP}:8686/api/v5/report/ltaas
     ----
 
 

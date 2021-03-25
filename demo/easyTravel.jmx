@@ -45,7 +45,7 @@
           </elementProp>
           <elementProp name="total_throughput_per_minute" elementType="Argument">
             <stringProp name="Argument.name">total_throughput_per_minute</stringProp>
-            <stringProp name="Argument.value">120</stringProp>
+            <stringProp name="Argument.value">90</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -101,7 +101,7 @@
         <longProp name="ThreadGroup.start_time">1363247040000</longProp>
         <longProp name="ThreadGroup.end_time">1363247040000</longProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
-        <stringProp name="ThreadGroup.duration">120</stringProp>
+        <stringProp name="ThreadGroup.duration">60</stringProp>
         <stringProp name="ThreadGroup.delay">0</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <boolProp name="ThreadGroup.delayedStart">true</boolProp>
@@ -149,7 +149,7 @@
           <intProp name="ThroughputController.maxThroughput">1</intProp>
           <FloatProperty>
             <name>ThroughputController.percentThroughput</name>
-            <value>30.0</value>
+            <value>33.3</value>
             <savedValue>0.0</savedValue>
           </FloatProperty>
         </ThroughputController>
@@ -180,7 +180,7 @@
           <intProp name="ThroughputController.maxThroughput">1</intProp>
           <FloatProperty>
             <name>ThroughputController.percentThroughput</name>
-            <value>20.0</value>
+            <value>16.7</value>
             <savedValue>0.0</savedValue>
           </FloatProperty>
         </ThroughputController>
