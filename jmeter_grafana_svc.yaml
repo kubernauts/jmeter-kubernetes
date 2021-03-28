@@ -1,7 +1,9 @@
+# Kubernete definition file
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: jmeter-grafana
+  name: jmeter-grafana-frontend
   labels:
     app: jmeter-grafana
 spec:
@@ -11,3 +13,18 @@ spec:
   selector:
     app: jmeter-grafana
   type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmeter-grafana
+  labels:
+    app: jmeter-grafana
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: jmeter-grafana
+  type: NodePort

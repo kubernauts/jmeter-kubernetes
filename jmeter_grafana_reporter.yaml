@@ -1,7 +1,7 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: jmeter-reporter
+  name: jmeter-grafana-reporter
   labels:
     jmeter_mode: reporter
 spec:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: jmreporter
-        image: kubernautslabs/jmeter-reporter:latest
+        image: kubernautslabs/jmeter-reporter
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8686
@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: jmeter-reporter
+  name: jmeter-grafana-reporter
   labels:
     jmeter_mode: reporter
 spec:
