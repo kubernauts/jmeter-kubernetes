@@ -449,7 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph data-line-7">
 <p><span class="line-through">OpenShift version &gt; 3.5</span>
-Implementing on Google Kubernete Engine on <code>dev_GKE</code> branch.</p>
+Implementing on Google Kubernete Engine (GKE) with <code>dev_GKE</code> branch.</p>
 </div>
 </div>
 </div>
@@ -459,54 +459,29 @@ Implementing on Google Kubernete Engine on <code>dev_GKE</code> branch.</p>
 <div class="olist arabic data-line-12">
 <ol class="arabic">
 <li class="data-line-12">
-<p>Build docker image for the first use.</p>
-<div class="literalblock data-line-14">
-<div class="content">
-<pre>----
-./dockerimages.sh
-----</pre>
-</div>
-</div>
+<p>Build docker image for the first use: <code>./dockerimages.sh</code></p>
+</li>
+<li class="data-line-14">
+<p>Run the following to deploy all components in the cluster: <code>./jmeter_cluster_create.sh</code></p>
+</li>
+<li class="data-line-16">
+<p>Setup influxdb and Grafana: <code>./dashboard.sh</code></p>
 </li>
 <li class="data-line-18">
-<p>Run the following for (re)deployments:</p>
-<div class="literalblock data-line-20">
-<div class="content">
-<pre>----
-./jmeter_cluster_create.sh
-----</pre>
-</div>
-</div>
+<p>Import the JMeter dashboard (<code>GrafanaJMeterTemplate.json</code>) in Grafana UI.</p>
 </li>
-<li class="data-line-24">
-<p>Setup influxdb and Graphana:</p>
-<div class="literalblock data-line-26">
-<div class="content">
-<pre>----
-./dashboard.sh
-----</pre>
-</div>
-</div>
+<li class="data-line-20">
+<p>Setup a report on Grafana. <code>jmeter-grafana-reporter</code> is exposed at port 80. Set up the link on th grafana to access the report: <code><a href="http://{grafana_reporter" class="bare">http://{grafana_reporter</a> IP}/api/v5/report/ltaas</code>. Click the options to include "time range", "variable values" and "open in a new tab."</p>
 </li>
-<li class="data-line-30">
-<p>Import the JMeter dashboard (<code>GrafanaJMeterTemplate.json</code>) in Graphana UI.</p>
-</li>
-<li class="data-line-32">
-<p>Start the load test.</p>
-<div class="literalblock data-line-34">
-<div class="content">
-<pre>----
-./start_test.sh
-----</pre>
-</div>
-</div>
+<li class="data-line-22">
+<p>Start the load test: <code>./start_test.sh</code></p>
 </li>
 </ol>
 </div>
-<div class="paragraph data-line-38">
+<div class="paragraph data-line-24">
 <p>Please follow the guide "Load Testing Jmeter On Kubernetes" on the original medium blog post:</p>
 </div>
-<div class="paragraph data-line-40">
+<div class="paragraph data-line-26">
 <p><a href="https://goo.gl/mkoX9E" class="bare">https://goo.gl/mkoX9E</a></p>
 </div>
 </div>
@@ -514,7 +489,7 @@ Implementing on Google Kubernete Engine on <code>dev_GKE</code> branch.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-25 21:40:53 +0800
+Last updated 2021-03-29 09:08:32 +0800
 </div>
 </div>
 </body>

@@ -9,46 +9,17 @@ Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
 
 == Quick Start Guide
 
-. Build docker image for the first use.
+. Build docker image for the first use: `./dockerimages.sh`
 
-    ----
-    ./dockerimages.sh
-    ----
+. Run the following to deploy all components in the cluster: `./jmeter_cluster_create.sh`
 
-. Run the following for (re)deployments:
+. Setup influxdb and Grafana: `./dashboard.sh`
 
-    ----
-    ./jmeter_cluster_create.sh
-    ----
+. Import the JMeter dashboard (`GrafanaJMeterTemplate.json`) in Grafana UI.
 
-. Setup influxdb and Graphana:
+. Setup a report on Grafana. `jmeter-grafana-reporter` is exposed at port 80. Set up the link on th grafana to access the report: `http://{grafana_reporter IP}/api/v5/report/ltaas`. Click the options to include "time range", "variable values" and "open in a new tab."
 
-    ----
-    ./dashboard.sh
-    ----
-
-. Import the JMeter dashboard (`GrafanaJMeterTemplate.json`) in Graphana UI.
-
-. Setup a report on Graphana:
-    
-    .. Spin up the reporter node and service:
-
-    ----
-    ./reporter.sh
-    ----
-    
-    .. Set up the link from the dashboard to the reporter service in Graphana GUI:
-
-    ----
-    http://{reporter NodePort IP}:8686/api/v5/report/ltaas
-    ----
-
-
-. Start the load test.
-
-    ----
-    ./start_test.sh
-    ----
+. Start the load test: `./start_test.sh`
 
 Please follow the guide "Load Testing Jmeter On Kubernetes" on the original medium blog post:
 
