@@ -92,6 +92,8 @@ echo "Creating Grafana Deployment"
 
 kubectl create -n $tenant -f $working_dir/jmeter_grafana_deploy.yaml
 
+kubectl create -n $tenant -f $working_dir/jmeter_grafana_reporter.yaml
+
 kubectl create -n $tenant -f $working_dir/jmeter_grafana_svc.yaml
 
 echo "Printout Of the $tenant Objects"
