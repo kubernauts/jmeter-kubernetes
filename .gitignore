@@ -1,5 +1,9 @@
 tenant_export
 
+*.crt
+*.key
+tls.*
+
 #User Defined
 *.log
 *.hprof
