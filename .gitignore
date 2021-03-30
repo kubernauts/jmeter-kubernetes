@@ -5,6 +5,7 @@ tenant_export
 tls.*
 
 #User Defined
+*.jtl
 *.log
 *.hprof
 *.code-workspace

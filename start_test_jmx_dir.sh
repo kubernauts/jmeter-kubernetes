@@ -8,7 +8,9 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 usage() {
   cat <<EOF
-Usage: $(basename "${BASH_SOURCE[0]}") [-h] jmx_dir
+Usage: $(basename "${BASH_SOURCE[0]}") [-h] jmx_dir test_report_name
+jmx_dir: test plan directory.
+test_report_name: Name for JMeter test report and output log.
 
 To launch Jmeter tests directly from the current terminal without accessing the jmeter master pod.
 It requires that you supply the test plan directory (jmx_dir), which contains ONLY ONE jmx file at the surface level.
@@ -64,7 +66,7 @@ parse_params() {
   args=("$@")
 
   # check required params and arguments
-  [[ ${#args[@]} -eq 0 ]] && die "Missing jmx_dir, directory containing the jmx test plan."
+  [[ ${#args[@]} -lt 2 ]] && die "Missing jmx_dir or test_report_name. Use -h for help."
 
   return 0
 }
@@ -75,6 +77,7 @@ setup_colors
 # Get namesapce variable stored in tenant_export.
 tenant=`awk '{print $NF}' "$script_dir/tenant_export"`
 jmx_dir="$1"
+test_report_name="$2"
 
 # Assert there is only one jmx file at the surface level. 
 if [ ! -d "$jmx_dir" ]
@@ -96,14 +99,23 @@ else
 fi
 
 # Get FQN of the jmx file
-jmx_name=`find $jmx_dir -maxdepth 1 -name "*.jmx"`
+jmx_file=`find $jmx_dir -maxdepth 1 -name "*.jmx"`
 
 # Get Master pod details
 master_pod=`kubectl get po -n $tenant | grep jmeter-master | awk '{print $1}'`
 
-msg "Coping test files into jmeter-master pod $master_pod:/tmp/$jmx_dir ..."
+msg "Copying test files into jmeter-master pod $master_pod:/tmp/$jmx_dir ..."
 kubectl exec -ti -n $tenant $master_pod  -- rm -rf /tmp/$jmx_dir
 kubectl cp $jmx_dir -n $tenant $master_pod:/tmp/$jmx_dir
 
 msg "Starting JMeter load test..."
-kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test /tmp/$jmx_name
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test /tmp/$jmx_file /tmp/$test_report_name.jtl
+
+msg "Generating JMeter HTML report..."
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report /tmp/$test_report_name.jtl /tmp/$test_report_name
+
+msg "Packing JMeter test report and log into a zip file..."
+kubectl exec -ti -n $tenant $master_pod --  zip -r /tmp/$test_report_name.zip /tmp/$test_report_name
+
+msg "Copying over the zipped report from the master pod..."
+kubectl -n $tenant cp $master_pod:/tmp/$test_report_name.zip $test_report_name.zip

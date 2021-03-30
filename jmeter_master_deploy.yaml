@@ -24,9 +24,15 @@ spec:
           - name: loadtest
             mountPath: /load_test
             subPath: "load_test"
+          - name: generate-report
+            mountPath: /generate_report
+            subPath: "generate_report"
         ports:
         - containerPort: 60000
       volumes:
       - name: loadtest 
+        configMap:
+         name: jmeter-load-test
+      - name: generate-report 
         configMap:
          name: jmeter-load-test
