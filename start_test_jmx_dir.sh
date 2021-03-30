@@ -114,8 +114,9 @@ kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test /tmp/$jmx_file /
 msg "Generating JMeter HTML report..."
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report /tmp/$test_report_name.jtl /tmp/$test_report_name
 
-msg "Packing JMeter test report and log into a zip file..."
-kubectl exec -ti -n $tenant $master_pod --  zip -r /tmp/$test_report_name.zip /tmp/$test_report_name
+msg "Copying over the test report and log from the master pod..."
+kubectl -n $tenant cp $master_pod:/tmp/$test_report_name $test_report_name
+kubectl -n $tenant cp $master_pod:/tmp/$test_report_name.jtl $test_report_name/$test_report_name.jtl
 
-msg "Copying over the zipped report from the master pod..."
-kubectl -n $tenant cp $master_pod:/tmp/$test_report_name.zip $test_report_name.zip
+msg "Packing test report and log into a ${master_pod}.zip locally..."
+zip -r $test_report_name.zip $test_report_name
