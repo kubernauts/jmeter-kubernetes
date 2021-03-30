@@ -119,4 +119,4 @@ kubectl -n $tenant cp $master_pod:/tmp/$test_report_name $test_report_name
 kubectl -n $tenant cp $master_pod:/tmp/$test_report_name.jtl $test_report_name/$test_report_name.jtl
 
 msg "Packing test report and log into a ${master_pod}.zip locally..."
-zip -r $test_report_name.zip $test_report_name
+zip -qr $test_report_name.zip $test_report_name
