@@ -8,14 +8,18 @@ data:
   load_test: |
     #!/bin/bash
     # Script created to invoke jmeter test script with the slave POD IP addresses
-    # Script should be run like: ./load_test "path to the test script in jmx format"
-    /jmeter/apache-jmeter-*/bin/jmeter -n -t $1 -l $2 \
+    # Usage: ./load_test jmx_path properties_path output_jtl_path
+    # Argument 1 is the jmx_path
+    # Argument 2 is the properties_path
+    # Argument 3 is the output_jtl_path
+    /jmeter/apache-jmeter-*/bin/jmeter -n -t $1 -p $2 -l $3 \
     -Dserver.rmi.ssl.disable=true \
     -R `getent ahostsv4 jmeter-slaves-svc | cut -d' ' -f1 | sort -u | awk -v ORS=, '{print $1}' | sed 's/,$//'`
   generate_report: |
     #!/bin/bash
     # To Generate a JMeter HTML report from a JMeter test log (jtl) file.
-    # Argument 1 is the jtl filename
-    # Argument 2 is the output report directory
+    # Usage: ./generate_report jtl_path output_report_path
+    # Argument 1 is the jtl_path
+    # Argument 2 is the output_report_path
     /jmeter/apache-jmeter-*/bin/jmeter -g $1 -o $2 \
     -Jjmeter.reportgenerator.overall_granularity=1000
