@@ -104,11 +104,11 @@ jmx_file=`find $jmx_dir -maxdepth 1 -name "*.jmx"`
 # Get Master pod details
 master_pod=`kubectl get po -n $tenant | grep jmeter-master | awk '{print $1}'`
 
-msg "Copying and overwriting test files into jmeter-master pod $master_pod:/tmp/$jmx_dir ..."
+msg "Pushing test files into jmeter-master pod $master_pod:/tmp/$jmx_dir ..."
 kubectl exec -ti -n $tenant $master_pod  -- rm -rf /tmp/$jmx_dir
 kubectl cp $jmx_dir -n $tenant $master_pod:/tmp/$jmx_dir
 
-msg "Starting JMeter load test..."
+msg "Starting the JMeter load test..."
 jtl_exists=`kubectl exec -ti -n $tenant $master_pod -- find /tmp -maxdepth 1 -name ${test_report_name}.jtl | wc -l`
 if [ $((jtl_exists)) -eq 1 ]
 then
@@ -119,12 +119,12 @@ then
 fi
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test /tmp/$jmx_file /tmp/$test_report_name.jtl
 
-msg "Generating JMeter HTML report..."
+msg "Generating the JMeter HTML report..."
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report /tmp/$test_report_name.jtl /tmp/$test_report_name
 
-msg "Copying over the test report and log from the master pod..."
+msg "Pulling the test report and log from the master pod..."
 kubectl -n $tenant cp $master_pod:/tmp/$test_report_name $test_report_name
 kubectl -n $tenant cp $master_pod:/tmp/$test_report_name.jtl $test_report_name/$test_report_name.jtl
 
-msg "Packing test report and log file into ${test_report_name}.zip..."
+msg "Packing the test report and log file into ${test_report_name}.zip..."
 zip -qr $test_report_name.zip $test_report_name
