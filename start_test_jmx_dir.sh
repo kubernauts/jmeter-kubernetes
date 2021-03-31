@@ -83,7 +83,7 @@ setup_colors
 
 # Get namesapce variable stored in tenant_export.
 tenant=`awk '{print $NF}' "$script_dir/tenant_export"`
-# test_plan_dir jmx_file properties_file test_report_name
+
 test_plan_dir="$1"
 jmx_file="$2"
 properties_file="$3"
@@ -106,11 +106,6 @@ else
   fi
 fi
 
-
-
-# Get FQN of the jmx file
-# jmx_file=`find $test_plan_dir -maxdepth 1 -name "*.jmx"`
-
 # Get Master pod details
 master_pod=`kubectl get po -n $tenant | grep jmeter-master | awk '{print $1}'`
 
@@ -118,7 +113,7 @@ msg "Pushing test files into jmeter-master pod $master_pod:/tmp/$test_plan_dir .
 kubectl exec -ti -n $tenant $master_pod  -- rm -rf /tmp/$test_plan_dir
 kubectl cp $test_plan_dir -n $tenant $master_pod:/tmp/$test_plan_dir
 
-# Checking if the test_report_name already exists in the jmeter-master pod, if so add date.
+msg "Checking if $test_report_name already exists in the jmeter-master pod..."
 jtl_exists=`kubectl exec -ti -n $tenant $master_pod -- find /tmp -maxdepth 1 -name ${test_report_name}.jtl | wc -l | xargs`
 if [ $((jtl_exists)) -eq 1 ]
 then
