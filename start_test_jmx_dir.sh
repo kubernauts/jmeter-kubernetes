@@ -14,7 +14,7 @@ Usage:
 $(basename "${BASH_SOURCE[0]}") [-h] test_plan_dir jmx_file properties_file test_report_name
 
 test_plan_dir: The test plan directory.
-jmx_file: The jmeter test file name.
+jmx_file: The jmeter test file name. Must be at the surface level in the test plan directory.
 properties_file: The properties file name to be used with the jmx. Must be at the surface level in the test plan directory.
 test_report_name: Name for the generated JMeter test report and output log. Must be at the surface level in the test plan directory.
 
@@ -106,15 +106,11 @@ else
   fi
 fi
 
-# Get Master pod details
-master_pod=`kubectl get po -n $tenant | grep jmeter-master | awk '{print $1}'`
-
-msg "Pushing test files into jmeter-master pod $master_pod:/tmp/$test_plan_dir ..."
-kubectl exec -ti -n $tenant $master_pod  -- rm -rf /tmp/$test_plan_dir
-kubectl cp $test_plan_dir -n $tenant $master_pod:/tmp/$test_plan_dir
+# Get master pod details
+master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
 msg "Checking if $test_report_name already exists in the jmeter-master pod..."
-jtl_exists=`kubectl exec -ti -n $tenant $master_pod -- find /tmp -maxdepth 1 -name ${test_report_name}.jtl | wc -l | xargs`
+jtl_exists=`kubectl -n $tenant exec -ti $master_pod -- find /tmp -maxdepth 1 -name ${test_report_name}.jtl | wc -l | xargs`
 if [ $((jtl_exists)) -eq 1 ]
 then
   now=`date +"%H%M%S_%Y%b%d"`
@@ -122,6 +118,22 @@ then
   msg "${test_report_name} already esists in the jmeter master pod. Renaming it with current date as ${new_test_report_name}"
   test_report_name=$new_test_report_name
 fi
+
+msg "Pushing test files into jmeter-master pod $master_pod:/tmp/$test_plan_dir ..."
+kubectl -n $tenant exec -ti $master_pod -- rm -rf /tmp/$test_plan_dir
+kubectl -n $tenant cp $test_plan_dir $master_pod:/tmp/$test_plan_dir
+
+# Get slave pods details
+slave_pods=(`kubectl get po -n $tenant | grep jmeter-slave | awk '{print $1}'`)
+for slave_pod in ${slave_pods[@]}
+  do
+    ###### TODO: 
+    msg "Pushing test files into jmeter-slave pod $slave_pod:/tmp/$test_plan_dir"
+    kubectl -n $tenant exec -ti $slave_pod  -- rm -rf /tmp/$test_plan_dir
+    kubectl -n $tenant cp $test_plan_dir $slave_pod:/tmp/$test_plan_dir
+    # kubectl -n $tenant exec -ti $slave_pod -- bash -c "mv -f /tmp/$test_plan_dir/*  /"
+done
+
 
 msg "Starting the JMeter test..."
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test /tmp/$test_plan_dir/$jmx_file.jmx /tmp/$test_plan_dir/$properties_file.properties /tmp/$test_report_name.jtl
