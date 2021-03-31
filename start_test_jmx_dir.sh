@@ -8,15 +8,17 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 usage() {
   cat <<EOF
-Usage: $(basename "${BASH_SOURCE[0]}") [-h] jmx_dir test_report_name
-jmx_dir: test plan directory.
-test_report_name: Name for JMeter test report and output log.
+Usage: $(basename "${BASH_SOURCE[0]}") [-h] test_plan_dir jmx_file properties_file test_report_name
+test_plan_dir: The test plan directory.
+jmx_file: The jmeter test file name.
+properties_file: The properties file name to be used with the jmx.
+test_report_name: Name for the generated JMeter test report and output log.
 
-To launch Jmeter tests directly from the current terminal without accessing the jmeter master pod.
-It requires that you supply the test plan directory (jmx_dir), which contains ONLY ONE jmx file at the surface level.
+To launch Jmeter tests directly from the current terminal without accessing the jmeter-master pod.
+It requires that you supply the test plan directory (test_plan_dir), which contains jmx_file and properties_file at the surface level.
 The directory may contain additional supporting files, such as propeties and csv files.
-The entire directory will be copied into the jmeter_master pod, and the jmx file at the surface will be executed.
-After execution, test script jmx file may be deleted from the master pod but not locally.
+The entire directory will be copied into the jmeter_master pod, and only the jmx file specified as properties_file at the surface will be executed.
+After execution, the jmeter test log file (jtl) and a HTML report will be pulled from the jmeter-master pod and packaged into a zip file using test_report_name.
 
 Available options:
 
@@ -66,7 +68,7 @@ parse_params() {
   args=("$@")
 
   # check required params and arguments
-  [[ ${#args[@]} -lt 2 ]] && die "Missing jmx_dir or test_report_name. Use -h for help."
+  [[ ${#args[@]} -lt 4 ]] && die "Arguments incomplete. Use -h for help."
 
   return 0
 }
@@ -76,10 +78,13 @@ setup_colors
 
 # Get namesapce variable stored in tenant_export.
 tenant=`awk '{print $NF}' "$script_dir/tenant_export"`
-jmx_dir="$1"
-test_report_name="$2"
+test_plan_dir jmx_file properties_file test_report_name
+test_plan_dir="$1"
+jmx_file="$2"
+properties_file="$3"
+test_report_name="$4"
 
-# Assert there is only one jmx file at the surface level. 
+# Assert jmx_dir exsists, and the jmx_file and properties_file are located at its surface level. 
 if [ ! -d "$jmx_dir" ]
 then
   msg "Directory $jmx_dir does not exist!"
@@ -98,6 +103,8 @@ else
   fi
 fi
 
+exit
+
 # Get FQN of the jmx file
 jmx_file=`find $jmx_dir -maxdepth 1 -name "*.jmx"`
 
@@ -108,7 +115,7 @@ msg "Pushing test files into jmeter-master pod $master_pod:/tmp/$jmx_dir ..."
 kubectl exec -ti -n $tenant $master_pod  -- rm -rf /tmp/$jmx_dir
 kubectl cp $jmx_dir -n $tenant $master_pod:/tmp/$jmx_dir
 
-msg "Starting the JMeter load test..."
+msg "Starting the JMeter test..."
 jtl_exists=`kubectl exec -ti -n $tenant $master_pod -- find /tmp -maxdepth 1 -name ${test_report_name}.jtl | wc -l`
 if [ $((jtl_exists)) -eq 1 ]
 then
