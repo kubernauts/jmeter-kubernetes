@@ -99,10 +99,10 @@ else
   ##############################
   if [ ! -f "$test_plan_dir/$jmx_file.jmx" ]
   then
-    die "$jmx_file.jmx does not exist in $test_plan_dir at the surface level.  Use -h for help"
+    die "$jmx_file.jmx does not exist in $test_plan_dir at the surface level of directory $test_plan_dir.  Use -h for help"
   elif [ ! -f "$test_plan_dir/$properties_file.properties" ]
   then
-    die "$properties_file.properties does not exist in $test_plan_dir at the surface level.  Use -h for help"
+    die "$properties_file.properties does not exist in $test_plan_dir at the surface level of directory $test_plan_dir.  Use -h for help"
   fi
 fi
 
