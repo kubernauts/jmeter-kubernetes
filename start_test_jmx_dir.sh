@@ -134,7 +134,6 @@ for slave_pod in ${slave_pods[@]}
     # kubectl -n $tenant exec -ti $slave_pod -- bash -c "mv -f /tmp/$test_plan_dir/*  /"
 done
 
-
 msg "Starting the JMeter test..."
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test /tmp/$test_plan_dir/$jmx_file.jmx /tmp/$test_plan_dir/$properties_file.properties /tmp/$test_report_name.jtl
 
