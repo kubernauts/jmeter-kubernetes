@@ -122,8 +122,11 @@ then
 fi
 
 msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/$test_plan_dir ..."
-kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir
-kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/$test_plan_dir
+# kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir
+kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/
+
+echo 'stop'
+exit
 
 # Get slave pods details
 slave_pods=(`kubectl get po -n $tenant | grep jmeter-slave | awk '{print $1}'`)
