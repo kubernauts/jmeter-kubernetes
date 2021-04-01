@@ -129,9 +129,10 @@ kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/$test_plan_dir
 slave_pods=(`kubectl get po -n $tenant | grep jmeter-slave | awk '{print $1}'`)
 for slave_pod in ${slave_pods[@]}
   do
-    msg "Pushing test files into jmeter-slave pod $slave_pod:$POD_WORK_DIR/$test_plan_dir"
-    kubectl -n $tenant exec -ti $slave_pod  -- rm -rf $POD_WORK_DIR/$test_plan_dir
-    kubectl -n $tenant cp $test_plan_dir $slave_pod:$POD_WORK_DIR/$test_plan_dir
+    echo 'Do Nothing'
+    # msg "Pushing test files into jmeter-slave pod $slave_pod:$POD_WORK_DIR/$test_plan_dir"
+    # kubectl -n $tenant exec -ti $slave_pod  -- rm -rf $POD_WORK_DIR/$test_plan_dir
+    # kubectl -n $tenant cp $test_plan_dir $slave_pod:$POD_WORK_DIR/$test_plan_dir
 done
 
 msg "Starting the JMeter test..."
