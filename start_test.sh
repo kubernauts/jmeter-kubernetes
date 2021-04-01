@@ -90,7 +90,7 @@ jmx_file=`basename $2`
 jmx_file="${jmx_file%.*}"
 properties_file=`basename $3`
 properties_file="${properties_file%.*}"
-# test_report_name="$4"
+test_report_name="$4"
 # pod_test_plan_dir="$POD_WORK_DIR/`basename $test_plan_dir`"
 # test="${jmx_file%.*}"
 
@@ -112,8 +112,10 @@ fi
 master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
 msg "Checking if $test_report_name already exists in the jmeter-master pod..."
-jtl_exists=`kubectl -n $tenant exec -ti $master_pod -- find $POD_WORK_DIR/ -maxdepth 1 -name ${test_report_name}.jtl | wc -l | xargs`
-if [ $((jtl_exists)) -eq 1 ]
+report_jtl_or_dir_count=`kubectl -n $tenant exec -ti $master_pod -- find $POD_WORK_DIR/ -maxdepth 1 
+  \( -type d -name ${test_report_name} -or -name ${test_report_name}.jtl \) | wc -l | xargs`
+
+if [ $((report_jtl_or_dir_count)) -lt 0 ]
 then
   now=`date +"%H%M%S_%Y%b%d"`
   new_test_report_name="${test_report_name}_${now}"
@@ -135,7 +137,7 @@ for slave_pod in ${slave_pods[@]}
 done
 
 msg "Starting the JMeter test..."
-kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test $POD_WORK_DIR $test_plan_dir $jmx_file.jmx $properties_file.properties $test_report_name
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test $POD_WORK_DIR $test_plan_dir $jmx_file.jmx $properties_file.properties $test_report_name.jtl
 
 msg "Generating the JMeter HTML report..."
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report $POD_WORK_DIR/$test_report_name.jtl $POD_WORK_DIR/$test_report_name
