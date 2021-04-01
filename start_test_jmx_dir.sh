@@ -88,11 +88,19 @@ test_plan_dir="$1"
 jmx_file="$2"
 properties_file="$3"
 test_report_name="$4"
-pod_work_dir="/"
+pod_work_dir="/mnt/"
+PROTECTED_DIRS=(bin boot dev docker-java-home etc generate_report home jmeter lib lib64 media mnt opt proc root run sbin srv sys tmp usr var)
 
+# echo $test_plan_dir
+# echo `basename $test_plan_dir`
 # Assert test_plan_dir and test_report_name are not linux reserved directories.
 #### TODO
 
+# for PROTECTED_DIR in ${PROTECTED_DIRS[@]}
+#   echo $PROTECTED_DIR
+# done
+
+# exit
 
 # Assert test_plan_dir exsists, and the jmx_file and properties_file are located at its surface level. 
 if [ ! -d "$test_plan_dir" ]
