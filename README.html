@@ -462,7 +462,7 @@ Implementing on Google Kubernete Engine (GKE) with <code>dev_GKE</code> branch.<
 <p>Build docker image for the first-time use: <code>./build_dockerimages.sh</code></p>
 </li>
 <li class="data-line-14">
-<p>Run the following to deploy all components in the cluster: <code>./jmeter_cluster_create.sh</code></p>
+<p>Run the following to create a new name space and deploy all components in the cluster: <code>./create_jmeter_cluster.sh</code></p>
 </li>
 <li class="data-line-16">
 <p>Setup influxdb and Grafana: <code>./dashboard.sh</code></p>
@@ -474,17 +474,15 @@ Implementing on Google Kubernete Engine (GKE) with <code>dev_GKE</code> branch.<
 <p>Setup a report on Grafana. <code>jmeter-grafana-reporter</code> is exposed at port 80. Set up the link on th grafana to access the report: <code><a href="http://{grafana_reporter" class="bare">http://{grafana_reporter</a> IP}/api/v5/report/ltaas</code>. Click the options to include "time range", "variable values" and "open in a new tab."</p>
 </li>
 <li class="data-line-22">
-<p>Start the load test: <code>./start_test.sh</code></p>
+<p>Start the load test: <code>./start_test.sh test_plan_dir jmx_file properties_file test_report_name</code>. Use <code>./start_test.sh -h</code> for help.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph data-line-24">
-<p>Please follow the guide "Load Testing Jmeter On Kubernetes" on the original medium blog post:</p>
+<p>original guide
+"Load Testing Jmeter On Kubernetes" on the original medium blog post: <a href="https://goo.gl/mkoX9E" class="bare">https://goo.gl/mkoX9E</a></p>
 </div>
-<div class="paragraph data-line-26">
-<p><a href="https://goo.gl/mkoX9E" class="bare">https://goo.gl/mkoX9E</a></p>
-</div>
-<div class="paragraph data-line-28">
+<div class="paragraph data-line-27">
 <p>original repo
 <a href="https://github.com/kubernauts/jmeter-kubernetes" class="bare">https://github.com/kubernauts/jmeter-kubernetes</a></p>
 </div>
@@ -493,7 +491,7 @@ Implementing on Google Kubernete Engine (GKE) with <code>dev_GKE</code> branch.<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-01 15:56:25 +0800
+Last updated 2021-04-01 17:07:00 +0800
 </div>
 </div>
 </body>
