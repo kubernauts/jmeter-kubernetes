@@ -65,7 +65,7 @@ echo "Number of worker nodes on this cluster is " $nodes
 
 echo
 
-#echo "Creating $nodes Jmeter slave replicas and service"
+echo "Creating Jmeter slave replicas and service"
 
 echo
 
@@ -73,7 +73,7 @@ kubectl create -n $tenant -f $working_dir/jmeter_slaves_deploy.yaml
 
 kubectl create -n $tenant -f $working_dir/jmeter_slaves_svc.yaml
 
-echo "Creating Jmeter Master"
+echo "Creating Jmeter Master and service"
 
 kubectl create -n $tenant -f $working_dir/jmeter_master_configmap.yaml
 
