@@ -11,7 +11,7 @@ Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
 
 . Build docker image for the first-time use: `./build_dockerimages.sh`
 
-. Run the following to deploy all components in the cluster: `./jmeter_cluster_create.sh`
+. Run the following to create a new name space and deploy all components in the cluster: `./create_jmeter_cluster.sh`
 
 . Setup influxdb and Grafana: `./dashboard.sh`
 
