@@ -84,7 +84,7 @@ setup_colors
 # Get namesapce variable stored in tenant_export.
 tenant=`awk '{print $NF}' "$script_dir/tenant_export"`
 
-POD_WORK_DIR="/tmp"
+POD_WORK_DIR="/"
 test_plan_dir="$1"
 jmx_file=`basename $2`
 jmx_file="${jmx_file%.*}"

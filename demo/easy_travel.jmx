@@ -89,7 +89,7 @@
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </SetupThreadGroup>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Easy Travel" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Easy Travel" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -351,7 +351,7 @@ System.out.println(userDir)
 log.warn(userDir)</stringProp>
         </JSR223Sampler>
         <hashTree/>
-        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="write-a-message-with-groovy-sampler" enabled="false">
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="write-a-message-with-groovy-sampler" enabled="true">
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="filename">${__P(write_a_message_groovy_path)}</stringProp>
           <stringProp name="parameters"></stringProp>
@@ -442,7 +442,12 @@ log.warn(userDir)</stringProp>
             </elementProp>
             <elementProp name="eventTags" elementType="Argument">
               <stringProp name="Argument.name">eventTags</stringProp>
-              <stringProp name="Argument.value"></stringProp>
+              <stringProp name="Argument.value">easy_travel</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="app" elementType="Argument">
+              <stringProp name="Argument.name">app</stringProp>
+              <stringProp name="Argument.value">easy_travel</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
