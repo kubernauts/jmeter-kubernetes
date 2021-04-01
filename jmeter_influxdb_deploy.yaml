@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - image: influxdb:1.8.0
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: influxdb
           volumeMounts:
           - name: config-volume
