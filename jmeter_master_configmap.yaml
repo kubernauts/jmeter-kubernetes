@@ -21,6 +21,7 @@ data:
     # Argument 4 is the properties_file
     # Argument 5 is the test_report_name
     cd $1/$2
+    pwd
     /jmeter/apache-jmeter-*/bin/jmeter -n -t $3 -G$4 -l $1/$5 \
     -Dserver.rmi.ssl.disable=true \
     -R `getent ahostsv4 jmeter-slaves-svc | cut -d' ' -f1 | sort -u | awk -v ORS=, '{print $1}' | sed 's/,$//'`
