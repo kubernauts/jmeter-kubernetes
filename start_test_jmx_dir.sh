@@ -88,8 +88,13 @@ test_plan_dir="$1"
 jmx_file="$2"
 properties_file="$3"
 test_report_name="$4"
+pod_work_dir="/"
 
-# Assert jmx_dir exsists, and the jmx_file and properties_file are located at its surface level. 
+# Assert test_plan_dir and test_report_name are not linux reserved directories.
+#### TODO
+
+
+# Assert test_plan_dir exsists, and the jmx_file and properties_file are located at its surface level. 
 if [ ! -d "$test_plan_dir" ]
 then
   die "Directory $test_plan_dir does not exist! Use -h for help."
@@ -110,7 +115,7 @@ fi
 master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
 msg "Checking if $test_report_name already exists in the jmeter-master pod..."
-jtl_exists=`kubectl -n $tenant exec -ti $master_pod -- find /tmp -maxdepth 1 -name ${test_report_name}.jtl | wc -l | xargs`
+jtl_exists=`kubectl -n $tenant exec -ti $master_pod -- find $pod_work_dir -maxdepth 1 -name ${test_report_name}.jtl | wc -l | xargs`
 if [ $((jtl_exists)) -eq 1 ]
 then
   now=`date +"%H%M%S_%Y%b%d"`
@@ -119,30 +124,28 @@ then
   test_report_name=$new_test_report_name
 fi
 
-msg "Pushing test files into jmeter-master pod $master_pod:/tmp/$test_plan_dir ..."
-kubectl -n $tenant exec -ti $master_pod -- rm -rf /tmp/$test_plan_dir
-kubectl -n $tenant cp $test_plan_dir $master_pod:/tmp/$test_plan_dir
+msg "Pushing test files into jmeter-master pod $master_pod:$pod_work_dir$test_plan_dir ..."
+kubectl -n $tenant exec -ti $master_pod -- rm -rf $pod_work_dir$test_plan_dir
+kubectl -n $tenant cp $test_plan_dir $master_pod:$pod_work_dir$test_plan_dir
 
 # Get slave pods details
 slave_pods=(`kubectl get po -n $tenant | grep jmeter-slave | awk '{print $1}'`)
 for slave_pod in ${slave_pods[@]}
   do
-    ###### TODO: 
-    msg "Pushing test files into jmeter-slave pod $slave_pod:/tmp/$test_plan_dir"
-    kubectl -n $tenant exec -ti $slave_pod  -- rm -rf /tmp/$test_plan_dir
-    kubectl -n $tenant cp $test_plan_dir $slave_pod:/tmp/$test_plan_dir
-    # kubectl -n $tenant exec -ti $slave_pod -- bash -c "mv -f /tmp/$test_plan_dir/*  /"
+    msg "Pushing test files into jmeter-slave pod $slave_pod:$pod_work_dir$test_plan_dir"
+    kubectl -n $tenant exec -ti $slave_pod  -- rm -rf $pod_work_dir$test_plan_dir
+    kubectl -n $tenant cp $test_plan_dir $slave_pod:$pod_work_dir$test_plan_dir
 done
 
 msg "Starting the JMeter test..."
-kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test /tmp/$test_plan_dir/$jmx_file.jmx /tmp/$test_plan_dir/$properties_file.properties /tmp/$test_report_name.jtl
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test $pod_work_dir$test_plan_dir/$jmx_file.jmx $pod_work_dir$test_plan_dir/$properties_file.properties $pod_work_dir$test_report_name.jtl
 
 msg "Generating the JMeter HTML report..."
-kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report /tmp/$test_report_name.jtl /tmp/$test_report_name
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report $pod_work_dir$test_report_name.jtl $pod_work_dir$test_report_name
 
 msg "Pulling the test report and log from the master pod..."
-kubectl -n $tenant cp $master_pod:/tmp/$test_report_name $test_report_name
-kubectl -n $tenant cp $master_pod:/tmp/$test_report_name.jtl $test_report_name/$test_report_name.jtl
+kubectl -n $tenant cp $master_pod:$pod_work_dir$test_report_name $test_report_name
+kubectl -n $tenant cp $master_pod:$pod_work_dir$test_report_name.jtl $test_report_name/$test_report_name.jtl
 
 msg "Packing the test report and log file into ${test_report_name}.zip..."
 zip -qr $test_report_name.zip $test_report_name
