@@ -110,7 +110,7 @@ fi
 master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
 msg "Checking if $test_report_name already exists in the jmeter-master pod..."
-report_jtl_or_dir_count=`kubectl -n $tenant exec -ti $master_pod -- find $POD_WORK_DIR/ -maxdepth 1 
+report_jtl_or_dir_count=`kubectl -n $tenant exec -ti $master_pod -- find $POD_WORK_DIR/ -maxdepth 1 \
   \( -type d -name ${test_report_name} -or -name ${test_report_name}.jtl \) | wc -l | xargs`
 
 if [ $((report_jtl_or_dir_count)) -lt 0 ]
