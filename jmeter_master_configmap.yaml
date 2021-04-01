@@ -4,6 +4,7 @@ metadata:
   name: jmeter-load-test
   labels:
     app: influxdb-jmeter
+  
 data:
   load_test: |
     #!/bin/bash
