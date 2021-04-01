@@ -75,7 +75,7 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 echo
 
-echo "Applying $nodes Jmeter slave replicas and service"
+echo "Applying Jmeter slave replicas and service"
 
 echo
 
