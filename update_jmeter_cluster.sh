@@ -72,6 +72,7 @@ parse_params "$@"
 setup_colors
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+tenant="$1"
 
 echo
 
