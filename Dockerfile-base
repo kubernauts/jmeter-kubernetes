@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk-slim
 MAINTAINER Kubernauts-lab
 		
-ARG JMETER_VERSION=5.0
+ARG JMETER_VERSION=5.4.1
 		
 RUN apt-get clean && \
 apt-get update && \
