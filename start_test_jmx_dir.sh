@@ -88,7 +88,7 @@ test_plan_dir="$1"
 jmx_file="$2"
 properties_file="$3"
 test_report_name="$4"
-pod_work_dir="/mnt/"
+pod_work_dir="/tmp/"
 PROTECTED_DIRS=(bin boot dev docker-java-home etc generate_report home jmeter lib lib64 media mnt opt proc root run sbin srv sys tmp usr var)
 
 # echo $test_plan_dir
