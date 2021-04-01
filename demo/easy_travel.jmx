@@ -340,7 +340,7 @@
           </doubleProp>
         </ConstantThroughputTimer>
         <hashTree/>
-        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="print work path" enabled="true">
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="stealing user dir = ${__groovy(System.getProperties().get(&apos;user.dir&apos;))}" enabled="true">
           <stringProp name="scriptLanguage">groovy</stringProp>
           <stringProp name="parameters"></stringProp>
           <stringProp name="filename"></stringProp>
