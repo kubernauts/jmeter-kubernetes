@@ -29,8 +29,7 @@ spec:
             subPath: "generate_report"
         ports:
         - containerPort: 60000
-        securityContext:
-          runAsUser: 10
+        workingDir: /tmp
       volumes:
       - name: loadtest 
         configMap:
