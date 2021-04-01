@@ -13,7 +13,15 @@ data:
     # Argument 1 is the jmx_path
     # Argument 2 is the properties_path
     # Argument 3 is the output_jtl_path
-    /jmeter/apache-jmeter-*/bin/jmeter -n -t $1 -G$2 -l $3 \
+    # Argument 4 is the POD_WORK_DIR/test_plan_dir
+
+    # Argument 1 is the POD_WORK_DIR
+    # Argument 2 is the test_plan_dir
+    # Argument 3 is the jmx_file
+    # Argument 4 is the properties_file
+    # Argument 5 is the test_report_name
+    cd $1/$2
+    /jmeter/apache-jmeter-*/bin/jmeter -n -t $3 -G$4 -l $1/$5 \
     -Dserver.rmi.ssl.disable=true \
     -R `getent ahostsv4 jmeter-slaves-svc | cut -d' ' -f1 | sort -u | awk -v ORS=, '{print $1}' | sed 's/,$//'`
   generate_report: |

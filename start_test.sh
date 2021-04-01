@@ -107,7 +107,7 @@ else
     die "'$properties_file.properties' does not exist at the surface level of directory $test_plan_dir.  Use './`basename ${BASH_SOURCE[0]}` -h' for help"
   fi
 fi
-exit
+
 # Get master pod details
 master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
