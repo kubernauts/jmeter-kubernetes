@@ -9,7 +9,7 @@ Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
 
 == Quick Start Guide
 
-. Build docker image for the first use: `./dockerimages.sh`
+. Build docker image for the first-time use: `./build_dockerimages.sh`
 
 . Run the following to deploy all components in the cluster: `./jmeter_cluster_create.sh`
 
@@ -24,4 +24,7 @@ Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
 Please follow the guide "Load Testing Jmeter On Kubernetes" on the original medium blog post:
 
 https://goo.gl/mkoX9E
+
+original repo
+https://github.com/kubernauts/jmeter-kubernetes
 
