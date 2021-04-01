@@ -91,8 +91,6 @@ jmx_file="${jmx_file%.*}"
 properties_file=`basename $3`
 properties_file="${properties_file%.*}"
 test_report_name="$4"
-# pod_test_plan_dir="$POD_WORK_DIR/`basename $test_plan_dir`"
-# test="${jmx_file%.*}"
 
 # Assert test_plan_dir exsists on the local machine, and the jmx_file and properties_file are located at its surface level. 
 if [ ! -d "$test_plan_dir" ]
