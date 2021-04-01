@@ -348,7 +348,7 @@
           <stringProp name="script">println System.getProperties().get(&apos;user.dir&apos;)</stringProp>
         </JSR223Sampler>
         <hashTree/>
-        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="write-a-message-with-groovy-sampler" enabled="true">
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="write-a-message-with-groovy-sampler" enabled="false">
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="filename">${__P(write_a_message_groovy_path)}</stringProp>
           <stringProp name="parameters"></stringProp>
