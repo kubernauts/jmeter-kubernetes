@@ -1,0 +1,81 @@
+# Kubernete definition file for influxdb, config map and services
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb-jmeter
+  labels:
+    app: influxdb-jmeter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb-jmeter
+  template:
+    metadata:
+      labels:
+        app: influxdb-jmeter
+    spec:
+      containers:
+        - image: influxdb:1.8.0
+          imagePullPolicy: Always
+          name: influxdb
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/influxdb
+          ports:
+            - containerPort: 8083
+              name: influx
+            - containerPort: 8086
+              name: api
+            - containerPort: 2003
+              name: graphite
+      volumes:
+      - name: config-volume
+        configMap:
+         name: influxdb-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: influxdb-config
+  labels:
+    app: influxdb-jmeter
+data:
+  influxdb.conf: |
+    [meta]
+      dir = "/var/lib/influxdb/meta"
+
+    [data]
+      dir = "/var/lib/influxdb/data"
+      engine = "tsm1"
+      wal-dir = "/var/lib/influxdb/wal"
+
+    # Configure the graphite api
+    [[graphite]]
+    enabled = true
+    bind-address = ":2003" # If not set, is actually set to bind-address.
+    database = "jmeter"  # store graphite data in this database
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmeter-influxdb
+  labels:
+    app: influxdb-jmeter
+spec:
+  ports:
+    - port: 8083
+      name: http
+      targetPort: 8083
+    - port: 8086
+      name: api
+      targetPort: 8086
+    - port: 2003
+      name: graphite
+      targetPort: 2003
+  selector:
+    app: influxdb-jmeter
