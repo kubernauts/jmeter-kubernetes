@@ -21,4 +21,4 @@ spec:
         ports:
         - containerPort: 1099
         - containerPort: 50000
-        workingDir: /tmp
+        workingDir: /tmp/kubermeter/workdir
