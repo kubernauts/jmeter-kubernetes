@@ -123,11 +123,10 @@ fi
 
 msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/ ..."
 # kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir
-kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/
-# tar cf - $test_plan_dir | kubectl -n $tenant exec -i  $master_pod -- tar xf - -C /tmp/bar
+# kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/
+tar cf - $test_plan_dir | kubectl -n $tenant exec -i  $master_pod -- tar xf - -C $POD_WORK_DIR
 
-
-echo 'stop'
+echo `kubectl -n $tenant exec -i  $master_pod -- ls /tmp/kubermeter`
 exit
 
 # Get slave pods details
