@@ -24,7 +24,7 @@ spec:
         ports:
         - containerPort: 1099
         - containerPort: 50000
-        workingDir: /tmp/kubermeter/workdir
+        workingDir: /tmp/kubermeter/current_test_plan
 
 ---
 apiVersion: v1
