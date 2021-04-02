@@ -84,8 +84,8 @@ setup_colors
 # Get namesapce variable stored in tenant_export.
 tenant=`awk '{print $NF}' "$script_dir/tenant_export"`
 
-POD_WORK_DIR='/tmp/kubermeter'
-POD_TEST_PLAN_DIR='workdir'
+POD_KUBERMETER_DIR='/tmp/kubermeter'
+POD_TEST_PLAN_DIR='current_test_plan'
 test_plan_dir="$1"
 test_plan_dir_basename=`basename $test_plan_dir`
 jmx_file=`basename $2`
@@ -115,7 +115,7 @@ master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
 # TODO: move up master work_dir
 msg "Checking if $test_report_name already exists in the jmeter-master pod..."
-report_jtl_or_dir_count=`kubectl -n $tenant exec -ti $master_pod -- find $POD_WORK_DIR/ -maxdepth 1 \
+report_jtl_or_dir_count=`kubectl -n $tenant exec -ti $master_pod -- find $POD_KUBERMETER_DIR/ -maxdepth 1 \
   \( -type d -name ${test_report_name} -or -name ${test_report_name}.jtl \) | wc -l | xargs`
 
 if [ $((report_jtl_or_dir_count)) -lt 0 ]
@@ -126,37 +126,33 @@ then
   test_report_name=$new_test_report_name
 fi
 
-msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/$POD_TEST_PLAN_DIR ..."
-
-kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir_basename
-kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/$test_plan_dir_basename
-kubectl -n $tenant exec -ti $master_pod -- cp -TR $POD_WORK_DIR/$test_plan_dir_basename $POD_WORK_DIR/$POD_TEST_PLAN_DIR 
-# kubectl -n $tenant exec -ti $master_pod -- ls $POD_WORK_DIR/$POD_TEST_PLAN_DIR
+msg "Pushing test files into jmeter-master pod $master_pod:$POD_KUBERMETER_DIR/$POD_TEST_PLAN_DIR ..."
+kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_KUBERMETER_DIR/$test_plan_dir_basename
+kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_KUBERMETER_DIR/$test_plan_dir_basename
+kubectl -n $tenant exec -ti $master_pod -- cp -TR $POD_KUBERMETER_DIR/$test_plan_dir_basename $POD_KUBERMETER_DIR/$POD_TEST_PLAN_DIR 
 
 
 # Get slave pods details
 slave_pods=(`kubectl get po -n $tenant | grep jmeter-slave | awk '{print $1}'`)
 
-
 for slave_pod in ${slave_pods[@]}
   do
-    msg "Pushing test files into jmeter-slave pod $slave_pod:$POD_WORK_DIR/$POD_TEST_PLAN_DIR"
-    kubectl -n $tenant exec -ti $slave_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir_basename
-    kubectl -n $tenant cp $test_plan_dir $slave_pod:$POD_WORK_DIR/$test_plan_dir_basename
-    kubectl -n $tenant exec -ti $slave_pod -- cp -TR $POD_WORK_DIR/$test_plan_dir_basename $POD_WORK_DIR/$POD_TEST_PLAN_DIR 
-    # kubectl -n $tenant exec -ti $slave_pod -- ls $POD_WORK_DIR/$POD_TEST_PLAN_DIR
+    msg "Pushing test files into jmeter-slave pod $slave_pod:$POD_KUBERMETER_DIR/$POD_TEST_PLAN_DIR"
+    kubectl -n $tenant exec -ti $slave_pod -- rm -rf $POD_KUBERMETER_DIR/$test_plan_dir_basename
+    kubectl -n $tenant cp $test_plan_dir $slave_pod:$POD_KUBERMETER_DIR/$test_plan_dir_basename
+    kubectl -n $tenant exec -ti $slave_pod -- cp -TR $POD_KUBERMETER_DIR/$test_plan_dir_basename $POD_KUBERMETER_DIR/$POD_TEST_PLAN_DIR 
 done
 
 
 msg "Starting the JMeter test..."
-kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test $POD_WORK_DIR $test_plan_dir $jmx_file.jmx $properties_file.properties $test_report_name.jtl
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test $POD_KUBERMETER_DIR $test_plan_dir $jmx_file.jmx $properties_file.properties $test_report_name.jtl
 
 msg "Generating the JMeter HTML report..."
-kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report $POD_WORK_DIR/$test_report_name.jtl $POD_WORK_DIR/$test_report_name
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /generate_report $POD_KUBERMETER_DIR/$test_report_name.jtl $POD_KUBERMETER_DIR/$test_report_name
 
 msg "Pulling the test report and log from the master pod..."
-kubectl -n $tenant cp $master_pod:$POD_WORK_DIR/$test_report_name $test_report_name
-kubectl -n $tenant cp $master_pod:$POD_WORK_DIR/$test_report_name.jtl $test_report_name/$test_report_name.jtl
+kubectl -n $tenant cp $master_pod:$POD_KUBERMETER_DIR/$test_report_name $test_report_name
+kubectl -n $tenant cp $master_pod:$POD_KUBERMETER_DIR/$test_report_name.jtl $test_report_name/$test_report_name.jtl
 
 msg "Packing the test report and log file into ${test_report_name}.zip..."
 zip -qr $test_report_name.zip $test_report_name

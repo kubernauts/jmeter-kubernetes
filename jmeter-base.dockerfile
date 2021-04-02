@@ -31,4 +31,4 @@ ENV PATH $JMETER_HOME/bin:$PATH
 RUN  cd /tmp \
 && mkdir /kubermeter \
 && cd /kubermeter \
-&& mkdir /workdir
+&& mkdir /current_test_plan
