@@ -127,7 +127,10 @@ then
 fi
 
 msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/$POD_TEST_PLAN_DIR ..."
+kubectl -n $tenant exec -ti $master_pod -- ls /
+exit
 kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$POD_TEST_PLAN_DIR
+
 kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/$test_plan_dir_basename
 kubectl -n $tenant exec -ti $master_pod -- mv $POD_WORK_DIR/$test_plan_dir_basename $POD_WORK_DIR/$POD_TEST_PLAN_DIR
 
