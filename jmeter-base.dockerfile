@@ -18,9 +18,6 @@ RUN  mkdir /jmeter \
 && tar -xzf apache-jmeter-$JMETER_VERSION.tgz \
 && rm apache-jmeter-$JMETER_VERSION.tgz
 
-RUN  mkdir /tmp/kubermeter \
-&& /tmp/kubermeter/workdir
-
 RUN cd /jmeter/apache-jmeter-$JMETER_VERSION/ && wget -q -O /tmp/JMeterPlugins-Standard-1.4.0.zip https://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.4.0.zip && unzip -n /tmp/JMeterPlugins-Standard-1.4.0.zip && rm /tmp/JMeterPlugins-Standard-1.4.0.zip
 
 RUN wget -q -O /jmeter/apache-jmeter-$JMETER_VERSION/lib/ext/pepper-box-1.0.jar https://github.com/raladev/load/blob/master/JARs/pepper-box-1.0.jar?raw=true
@@ -30,3 +27,8 @@ RUN cd /jmeter/apache-jmeter-$JMETER_VERSION/ && wget -q -O /tmp/bzm-parallel-0.
 ENV JMETER_HOME /jmeter/apache-jmeter-$JMETER_VERSION/
 		
 ENV PATH $JMETER_HOME/bin:$PATH
+
+RUN  cd /tmp \
+&& mkdir /kubermeter \
+&& cd /kubermeter \
+&& mkdur /workdir
