@@ -134,16 +134,17 @@ kubectl -n $tenant exec -ti $master_pod -- mv $POD_WORK_DIR/$test_plan_dir_basen
 
 # Get slave pods details
 slave_pods=(`kubectl get po -n $tenant | grep jmeter-slave | awk '{print $1}'`)
+
+
 for slave_pod in ${slave_pods[@]}
   do
     msg "Pushing test files into jmeter-slave pod $slave_pod:$POD_WORK_DIR/$POD_TEST_PLAN_DIR"
-    kubectl -n $tenant exec -ti $slave_pod -- rm -rf $POD_WORK_DIR/$POD_TEST_PLAN_DIR
+    kubectl -n $tenant exec -ti $slave_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir_basename
     kubectl -n $tenant cp $test_plan_dir $slave_pod:$POD_WORK_DIR/$test_plan_dir_basename
-    kubectl -n $tenant exec -ti $slave_pod -- mv $POD_WORK_DIR/$test_plan_dir_basename $POD_WORK_DIR/$POD_TEST_PLAN_DIR
+    kubectl -n $tenant exec -ti $slave_pod -- cp -TR $POD_WORK_DIR/$test_plan_dir_basename $POD_WORK_DIR/$POD_TEST_PLAN_DIR 
+    kubectl -n $tenant exec -ti $slave_pod -- ls $POD_WORK_DIR/$POD_TEST_PLAN_DIR
 done
 
-echo $POD_TEST_PLAN_DIR
-exit
 
 msg "Starting the JMeter test..."
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test $POD_WORK_DIR $test_plan_dir $jmx_file.jmx $properties_file.properties $test_report_name.jtl
