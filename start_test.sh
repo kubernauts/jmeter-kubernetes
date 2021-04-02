@@ -84,13 +84,17 @@ setup_colors
 # Get namesapce variable stored in tenant_export.
 tenant=`awk '{print $NF}' "$script_dir/tenant_export"`
 
-POD_WORK_DIR="/tmp/kubermeter/workdir"
+POD_WORK_DIR='/tmp/kubermeter'
+POD_TEST_PLAN_DIR='workdir'
 test_plan_dir="$1"
+test_plan_dir_basename=`basename $test_plan_dir`
 jmx_file=`basename $2`
 jmx_file="${jmx_file%.*}"
 properties_file=`basename $3`
 properties_file="${properties_file%.*}"
 test_report_name="$4"
+
+
 
 # Assert test_plan_dir exsists on the local machine, and the jmx_file and properties_file are located at its surface level. 
 if [ ! -d "$test_plan_dir" ]
@@ -109,6 +113,7 @@ fi
 # Get master pod details
 master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
+# TODO: move up master work_dir
 msg "Checking if $test_report_name already exists in the jmeter-master pod..."
 report_jtl_or_dir_count=`kubectl -n $tenant exec -ti $master_pod -- find $POD_WORK_DIR/ -maxdepth 1 \
   \( -type d -name ${test_report_name} -or -name ${test_report_name}.jtl \) | wc -l | xargs`
@@ -121,22 +126,24 @@ then
   test_report_name=$new_test_report_name
 fi
 
-msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/ ..."
-# kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir
-# kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/
-tar cf - $test_plan_dir | kubectl -n $tenant exec -i  $master_pod -- tar xf - -C $POD_WORK_DIR
+msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/$POD_TEST_PLAN_DIR ..."
+kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$POD_TEST_PLAN_DIR
+kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/$test_plan_dir_basename
+kubectl -n $tenant exec -ti $master_pod -- mv $POD_WORK_DIR/$test_plan_dir_basename $POD_WORK_DIR/$POD_TEST_PLAN_DIR
 
-echo `kubectl -n $tenant exec -i  $master_pod -- ls /tmp/kubermeter`
-exit
 
 # Get slave pods details
 slave_pods=(`kubectl get po -n $tenant | grep jmeter-slave | awk '{print $1}'`)
 for slave_pod in ${slave_pods[@]}
   do
-    msg "Pushing test files into jmeter-slave pod $slave_pod:$POD_WORK_DIR/$test_plan_dir"
-    kubectl -n $tenant exec -ti $slave_pod  -- rm -rf $POD_WORK_DIR/$test_plan_dir
-    kubectl -n $tenant cp $test_plan_dir $slave_pod:$POD_WORK_DIR/$test_plan_dir
+    msg "Pushing test files into jmeter-slave pod $slave_pod:$POD_WORK_DIR/$POD_TEST_PLAN_DIR"
+    kubectl -n $tenant exec -ti $slave_pod -- rm -rf $POD_WORK_DIR/$POD_TEST_PLAN_DIR
+    kubectl -n $tenant cp $test_plan_dir $slave_pod:$POD_WORK_DIR/$test_plan_dir_basename
+    kubectl -n $tenant exec -ti $slave_pod -- mv $POD_WORK_DIR/$test_plan_dir_basename $POD_WORK_DIR/$POD_TEST_PLAN_DIR
 done
+
+echo $POD_TEST_PLAN_DIR
+exit
 
 msg "Starting the JMeter test..."
 kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test $POD_WORK_DIR $test_plan_dir $jmx_file.jmx $properties_file.properties $test_report_name.jtl
