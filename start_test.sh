@@ -84,7 +84,7 @@ setup_colors
 # Get namesapce variable stored in tenant_export.
 tenant=`awk '{print $NF}' "$script_dir/tenant_export"`
 
-POD_WORK_DIR="/"
+POD_WORK_DIR="/tmp"
 test_plan_dir="$1"
 jmx_file=`basename $2`
 jmx_file="${jmx_file%.*}"
@@ -121,9 +121,11 @@ then
   test_report_name=$new_test_report_name
 fi
 
-msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/$test_plan_dir ..."
+msg "Pushing test files into jmeter-master pod $master_pod:$POD_WORK_DIR/ ..."
 # kubectl -n $tenant exec -ti $master_pod -- rm -rf $POD_WORK_DIR/$test_plan_dir
 kubectl -n $tenant cp $test_plan_dir $master_pod:$POD_WORK_DIR/
+# tar cf - $test_plan_dir | kubectl -n $tenant exec -i  $master_pod -- tar xf - -C /tmp/bar
+
 
 echo 'stop'
 exit
