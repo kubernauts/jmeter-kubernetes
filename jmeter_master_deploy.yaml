@@ -29,7 +29,7 @@ spec:
             subPath: "generate_report"
         ports:
         - containerPort: 60000
-        workingDir: /tmp/kubermeter
+        workingDir: /tmp/kubermeter/workdir
       volumes:
       - name: loadtest 
         configMap:
