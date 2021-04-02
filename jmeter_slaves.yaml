@@ -1,3 +1,6 @@
+# Kubernete definition file for jmeter-slaves and config map
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,3 +25,22 @@ spec:
         - containerPort: 1099
         - containerPort: 50000
         workingDir: /tmp/kubermeter/workdir
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmeter-slaves-svc
+  labels:
+    jmeter_mode: slave
+spec:
+  clusterIP: None
+  ports:
+    - port: 1099
+      name: first
+      targetPort: 1099
+    - port: 50000
+      name: second
+      targetPort: 50000
+  selector:
+    jmeter_mode: slave

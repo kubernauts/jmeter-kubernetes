@@ -67,11 +67,7 @@ echo
 
 echo "Creating Jmeter slave replicas and service"
 
-echo
-
-kubectl create -n $tenant -f $working_dir/jmeter_slaves_deploy.yaml
-
-kubectl create -n $tenant -f $working_dir/jmeter_slaves_svc.yaml
+kubectl create -n $tenant -f $working_dir/jmeter_slaves.yaml
 
 echo "Creating Jmeter Master"
 

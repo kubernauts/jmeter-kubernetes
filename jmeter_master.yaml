@@ -1,4 +1,4 @@
-# Kubernete definition file for jmeter-master and its config map
+# Kubernete definition file for jmeter-master and config map
 
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
