@@ -1,0 +1,29 @@
+= JMeter Cluster Support for Kubernetes
+
+== Prerequisites
+
+Kubernetes > 1.16
+
+[.line-through]#OpenShift version > 3.5#
+Implementing on Google Kubernete Engine (GKE) with `dev_GKE` branch.
+
+== Quick Start Guide
+
+. Build docker image for the first-time use: `./build_dockerimages.sh`
+
+. Run the following to create a new name space and deploy all components in the cluster: `./create_jmeter_cluster.sh`
+
+. Setup influxdb and Grafana: `./grafana_dashboard_setup.sh`
+
+. Import the JMeter dashboard (`GrafanaJMeterTemplate.json`) in Grafana UI.
+
+. Setup a report on Grafana. `jmeter-grafana-reporter` is exposed at port 80. Set up the link on th grafana to access the report: `http://{grafana_reporter IP}/api/v5/report/ltaas`. Click the options to include "time range", "variable values" and "open in a new tab."
+
+. Start the load test: `./start_test.sh test_plan_dir jmx_file properties_file test_report_name`. Use `./start_test.sh -h` for help.
+
+original guide
+"Load Testing Jmeter On Kubernetes" on the original medium blog post: https://goo.gl/mkoX9E
+
+original repo
+https://github.com/kubernauts/jmeter-kubernetes
+

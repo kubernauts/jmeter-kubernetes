@@ -1,0 +1,72 @@
+# Kubernete definition file for jmeter-master and config map
+
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: jmeter-master
+  labels:
+    jmeter_mode: master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      jmeter_mode: master
+  template:
+    metadata:
+      labels:
+        jmeter_mode: master
+    spec:
+      containers:
+      - name: jmmaster
+        image: kubernautslabs/jmeter_master:latest
+        imagePullPolicy: Always
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        volumeMounts:
+          - name: loadtest
+            mountPath: /load_test
+            subPath: "load_test"
+          - name: generate-report
+            mountPath: /generate_report
+            subPath: "generate_report"
+        ports:
+        - containerPort: 60000
+        workingDir: /tmp/kubermeter/current_test_plan
+      volumes:
+      - name: loadtest 
+        configMap:
+         name: jmeter-load-test
+      - name: generate-report 
+        configMap:
+         name: jmeter-load-test
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jmeter-load-test
+  labels:
+    app: influxdb-jmeter
+  
+data:
+  load_test: |
+    #!/bin/bash
+    # Script created to invoke jmeter test script with the slave POD IP addresses
+    # Usage: ./load_test jmx_path properties_path output_jtl_path
+    # Argument 1 is the POD_WORK_DIR
+    # Argument 2 is the test_plan_dir
+    # Argument 3 is the jmx_file
+    # Argument 4 is the properties_file
+    # Argument 5 is the test_report_name
+    /jmeter/apache-jmeter-*/bin/jmeter -n -t $3 -G$4 -l $1/$5 \
+    -Dserver.rmi.ssl.disable=true \
+    -R `getent ahostsv4 jmeter-slaves-svc | cut -d' ' -f1 | sort -u | awk -v ORS=, '{print $1}' | sed 's/,$//'`
+  generate_report: |
+    #!/bin/bash
+    # To Generate a JMeter HTML report from a JMeter test log (jtl) file.
+    # Usage: ./generate_report jtl_path output_report_path
+    # Argument 1 is the jtl_path
+    # Argument 2 is the output_report_path
+    /jmeter/apache-jmeter-*/bin/jmeter -g $1 -o $2 \
+    -Jjmeter.reportgenerator.overall_granularity=1000

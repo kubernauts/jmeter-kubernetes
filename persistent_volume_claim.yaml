@@ -1,0 +1,12 @@
+# Kubernete definition file
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jmeter-test-reports
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
