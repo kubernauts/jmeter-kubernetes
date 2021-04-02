@@ -1,3 +1,6 @@
+# Kubernete definition file for grafana
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,3 +37,33 @@ spec:
           # If you're only using the API Server proxy, set this value instead:
           # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
           value: /
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmeter-grafana-frontend
+  labels:
+    app: jmeter-grafana
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: jmeter-grafana
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmeter-grafana
+  labels:
+    app: jmeter-grafana
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: jmeter-grafana
+  type: NodePort
