@@ -113,8 +113,7 @@ fi
 # Get master pod details
 master_pod=`kubectl -n $tenant get po | grep jmeter-master | awk '{print $1}'`
 
-# TODO: move up master work_dir
-msg "Checking if $test_report_name already exists in the jmeter-master pod..."
+msg "Checking if test results of $test_report_name already exists in the jmeter-master pod..."
 report_jtl_or_dir_count=`kubectl -n $tenant exec -ti $master_pod -- find $POD_KUBERMETER_DIR/ -maxdepth 1 \
   \( -type d -name ${test_report_name} -or -name ${test_report_name}.jtl \) | wc -l | xargs`
 
