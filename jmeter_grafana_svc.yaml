@@ -10,4 +10,4 @@ spec:
       targetPort: 3000
   selector:
     app: jmeter-grafana
-  type: NodePort
+  type: LoadBalancer

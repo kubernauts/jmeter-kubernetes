@@ -5,7 +5,7 @@ metadata:
   labels:
     jmeter_mode: slave
 spec:
-  replicas: 2 
+  replicas: 4 
   selector:
     matchLabels:
       jmeter_mode: slave
