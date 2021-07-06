@@ -34,4 +34,4 @@ spec:
       targetPort: 8686
   selector:
     jmeter_mode: reporter
-  type: NodePort
+  type: LoadBalancer
