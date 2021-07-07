@@ -18,11 +18,11 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1000</stringProp>
+        <stringProp name="ThreadGroup.num_threads">200</stringProp>
         <stringProp name="ThreadGroup.ramp_time">10</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration">60</stringProp>
-        <stringProp name="ThreadGroup.delay">0</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">90</stringProp>
+        <stringProp name="ThreadGroup.delay">10</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
@@ -32,45 +32,41 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&#xd;
-{&#xd;
-&quot;PostingEntryViewModel&quot;:[&#xd;
-{&#xd;
- &quot;Amount&quot;:100.00,&#xd;
-&quot;PostingRecordType&quot;:1,&#xd;
-&quot;AccountNumber&quot;:&quot;${AccountNumber1}&quot;,&#xd;
-&quot;Narration&quot;:&quot;Guze&quot;,&#xd;
-&quot;InstrumentNumber&quot;:&quot;${__Random(000000000,999999999)}T123hKUD&quot;,&#xd;
-&quot;EntryCode&quot;: &quot;D305&quot;,&#xd;
-&quot;Depositor&quot;:&quot;Guze&quot;,&#xd;
-&quot;BranchID&quot;:&quot;18f1d9ec-8be8-47d3-b736-80fb721fced6&quot;&#xd;
-},&#xd;
- &#xd;
+                <stringProp name="Argument.value">{&#xd;
+	&quot;PostingEntryViewModel&quot;: [{&#xd;
+			&quot;Amount&quot;: 100.00,&#xd;
+			&quot;PostingRecordType&quot;: 1,&#xd;
+			&quot;AccountNumber&quot;: &quot;${AccountNumber1}&quot;,&#xd;
+			&quot;Narration&quot;: &quot;Guze&quot;,&#xd;
+			&quot;InstrumentNumber&quot;: &quot;${__Random(000000000,999999999)}T123hKUD&quot;,&#xd;
+			&quot;EntryCode&quot;: &quot;D305&quot;,&#xd;
+			&quot;Depositor&quot;: &quot;Guze&quot;,&#xd;
+			&quot;BranchID&quot;: &quot;18f1d9ec-8be8-47d3-b736-80fb721fced6&quot;&#xd;
+		},&#xd;
 &#xd;
-{&#xd;
-&quot;Amount&quot;:100.00,&#xd;
-&quot;PostingRecordType&quot;:2,&#xd;
-&quot;AccountNumber&quot;: &quot;${AccountNumber2}&quot;,&#xd;
-&quot;Narration&quot;:&quot;Guze&quot;,&#xd;
-&quot;InstrumentNumber&quot;:&quot;${__Random(000000000,999999999)}T123hKUD&quot;,&#xd;
- &quot;EntryCode&quot;: &quot;C305&quot;,&#xd;
-&quot;Depositor&quot;:&quot;Guze&quot;,&#xd;
-&quot;BranchID&quot;:&quot;18f1d9ec-8be8-47d3-b736-80fb721fced6&quot;&#xd;
-}&#xd;
 &#xd;
-],&#xd;
-&quot;PostingBaseViewModel&quot;:{&#xd;
-    &quot;HasCOTWaiver&quot;:false,&#xd;
-    &quot;ForceDebit&quot;:false,&#xd;
-    &quot;RealDate&quot;:&quot;2020-11-02T07:44:49.1470824Z&quot;,&#xd;
-    &quot;FinancialDate&quot;:&quot;2017-02-13T00:00:00&quot;,&#xd;
-    &quot;IPAddress&quot;:&quot;172.31.23.118&quot;,&#xd;
-   &#xd;
-    &quot;PostingType&quot;:1&#xd;
-}&#xd;
-    }&#xd;
+		{&#xd;
+			&quot;Amount&quot;: 100.00,&#xd;
+			&quot;PostingRecordType&quot;: 2,&#xd;
+			&quot;AccountNumber&quot;: &quot;${AccountNumber2}&quot;,&#xd;
+			&quot;Narration&quot;: &quot;Guze&quot;,&#xd;
+			&quot;InstrumentNumber&quot;: &quot;${__Random(000000000,999999999)}T123hKUD&quot;,&#xd;
+			&quot;EntryCode&quot;: &quot;C305&quot;,&#xd;
+			&quot;Depositor&quot;: &quot;Guze&quot;,&#xd;
+			&quot;BranchID&quot;: &quot;18f1d9ec-8be8-47d3-b736-80fb721fced6&quot;&#xd;
+		}&#xd;
 &#xd;
-</stringProp>
+	],&#xd;
+	&quot;PostingBaseViewModel&quot;: {&#xd;
+		&quot;HasCOTWaiver&quot;: false,&#xd;
+		&quot;ForceDebit&quot;: false,&#xd;
+		&quot;RealDate&quot;: &quot;2020-11-02T07:44:49.1470824Z&quot;,&#xd;
+		&quot;FinancialDate&quot;: &quot;2017-02-13T00:00:00&quot;,&#xd;
+		&quot;IPAddress&quot;: &quot;172.31.23.118&quot;,&#xd;
+&#xd;
+		&quot;PostingType&quot;: 1&#xd;
+	}&#xd;
+}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -115,7 +111,7 @@
             </collectionProp>
           </HeaderManager>
           <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="false">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="1536">00</stringProp>
             </collectionProp>
@@ -125,92 +121,9 @@
             <intProp name="Assertion.test_type">2</intProp>
           </ResponseAssertion>
           <hashTree/>
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="false">
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
             <stringProp name="ConstantTimer.delay">10</stringProp>
           </ConstantTimer>
-          <hashTree/>
-          <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener" enabled="false">
-            <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="graphiteMetricsSender" elementType="Argument">
-                  <stringProp name="Argument.name">graphiteMetricsSender</stringProp>
-                  <stringProp name="Argument.value">org.apache.jmeter.visualizers.backend.graphite.TextGraphiteMetricsSender</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="graphiteHost" elementType="Argument">
-                  <stringProp name="Argument.name">graphiteHost</stringProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="graphitePort" elementType="Argument">
-                  <stringProp name="Argument.name">graphitePort</stringProp>
-                  <stringProp name="Argument.value">2003</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="rootMetricsPrefix" elementType="Argument">
-                  <stringProp name="Argument.name">rootMetricsPrefix</stringProp>
-                  <stringProp name="Argument.value">jmeter.</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="summaryOnly" elementType="Argument">
-                  <stringProp name="Argument.name">summaryOnly</stringProp>
-                  <stringProp name="Argument.value">true</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="samplersList" elementType="Argument">
-                  <stringProp name="Argument.name">samplersList</stringProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="percentiles" elementType="Argument">
-                  <stringProp name="Argument.name">percentiles</stringProp>
-                  <stringProp name="Argument.value">90;95;99</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="apiKey" elementType="Argument">
-                  <stringProp name="Argument.name">apiKey</stringProp>
-                  <stringProp name="Argument.value">05986080b4e249d54dcbbc19a9d31d12</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="includeSubresults" elementType="Argument">
-                  <stringProp name="Argument.name">includeSubresults</stringProp>
-                  <stringProp name="Argument.value">false</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="logsBatchSize" elementType="Argument">
-                  <stringProp name="Argument.name">logsBatchSize</stringProp>
-                  <stringProp name="Argument.value">500</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="samplersRegex" elementType="Argument">
-                  <stringProp name="Argument.name">samplersRegex</stringProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="logIntakeUrl" elementType="Argument">
-                  <stringProp name="Argument.name">logIntakeUrl</stringProp>
-                  <stringProp name="Argument.value">https://http-intake.logs.datadoghq.com/v1/input/</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="datadogUrl" elementType="Argument">
-                  <stringProp name="Argument.name">datadogUrl</stringProp>
-                  <stringProp name="Argument.value">https://api.datadoghq.com/api/</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="sendResultsAsLogs" elementType="Argument">
-                  <stringProp name="Argument.name">sendResultsAsLogs</stringProp>
-                  <stringProp name="Argument.value">true</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-                <elementProp name="metricsMaxBatchSize" elementType="Argument">
-                  <stringProp name="Argument.name">metricsMaxBatchSize</stringProp>
-                  <stringProp name="Argument.value">200</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="classname">org.apache.jmeter.visualizers.backend.graphite.GraphiteBackendListenerClient</stringProp>
-          </BackendListener>
           <hashTree/>
           <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
@@ -311,6 +224,16 @@
           <elementProp name="terminalUrl" elementType="Argument">
             <stringProp name="Argument.name">terminalUrl</stringProp>
             <stringProp name="Argument.value">partners-uat.kudabank.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="AccountNumber1" elementType="Argument">
+            <stringProp name="Argument.name">AccountNumber1</stringProp>
+            <stringProp name="Argument.value">1100906814</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="AccountNumber2" elementType="Argument">
+            <stringProp name="Argument.name">AccountNumber2</stringProp>
+            <stringProp name="Argument.value">1100014937</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -695,14 +618,14 @@
                   <stringProp name="Argument.value">https://http-intake.logs.datadoghq.com/v1/input/</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
-                <elementProp name="sendResultsAsLogs" elementType="Argument">
-                  <stringProp name="Argument.name">sendResultsAsLogs</stringProp>
-                  <stringProp name="Argument.value">true</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
                 <elementProp name="datadogUrl" elementType="Argument">
                   <stringProp name="Argument.name">datadogUrl</stringProp>
                   <stringProp name="Argument.value">https://api.datadoghq.com/api/</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="sendResultsAsLogs" elementType="Argument">
+                  <stringProp name="Argument.name">sendResultsAsLogs</stringProp>
+                  <stringProp name="Argument.value">true</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
                 <elementProp name="metricsMaxBatchSize" elementType="Argument">
@@ -1231,14 +1154,14 @@
                   <stringProp name="Argument.value">https://http-intake.logs.datadoghq.com/v1/input/</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
-                <elementProp name="sendResultsAsLogs" elementType="Argument">
-                  <stringProp name="Argument.name">sendResultsAsLogs</stringProp>
-                  <stringProp name="Argument.value">true</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
                 <elementProp name="datadogUrl" elementType="Argument">
                   <stringProp name="Argument.name">datadogUrl</stringProp>
                   <stringProp name="Argument.value">https://api.datadoghq.com/api/</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="sendResultsAsLogs" elementType="Argument">
+                  <stringProp name="Argument.name">sendResultsAsLogs</stringProp>
+                  <stringProp name="Argument.value">true</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
                 <elementProp name="metricsMaxBatchSize" elementType="Argument">
@@ -2009,6 +1932,59 @@
           <hashTree/>
         </hashTree>
       </hashTree>
+      <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener" enabled="true">
+        <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="influxdbMetricsSender" elementType="Argument">
+              <stringProp name="Argument.name">influxdbMetricsSender</stringProp>
+              <stringProp name="Argument.value">org.apache.jmeter.visualizers.backend.influxdb.HttpMetricsSender</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="influxdbUrl" elementType="Argument">
+              <stringProp name="Argument.name">influxdbUrl</stringProp>
+              <stringProp name="Argument.value">http://jmeter-influxdb:8086/write?db=jmeter</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="application" elementType="Argument">
+              <stringProp name="Argument.name">application</stringProp>
+              <stringProp name="Argument.value">application name</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="measurement" elementType="Argument">
+              <stringProp name="Argument.name">measurement</stringProp>
+              <stringProp name="Argument.value">jmeter</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="summaryOnly" elementType="Argument">
+              <stringProp name="Argument.name">summaryOnly</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="samplersRegex" elementType="Argument">
+              <stringProp name="Argument.name">samplersRegex</stringProp>
+              <stringProp name="Argument.value">.*</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="percentiles" elementType="Argument">
+              <stringProp name="Argument.name">percentiles</stringProp>
+              <stringProp name="Argument.value">90;95;99</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="testTitle" elementType="Argument">
+              <stringProp name="Argument.name">testTitle</stringProp>
+              <stringProp name="Argument.value">Test name</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="eventTags" elementType="Argument">
+              <stringProp name="Argument.name">eventTags</stringProp>
+              <stringProp name="Argument.value"></stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </elementProp>
+        <stringProp name="classname">org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp>
+      </BackendListener>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
