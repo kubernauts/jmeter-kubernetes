@@ -36,9 +36,9 @@ spec:
         - name: GF_SERVER_ROOT_URL
           # If you're only using the API Server proxy, set this value instead:
           # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
-          value: /
-        # - name: GF_PLUGIN_GRAFANA_IMAGE_RENDERER_RENDERING_IGNORE_HTTPS_ERRORS
-        #   value: true
+          value: http://jmeter-grafana:3000/ #/
+        - name: GF_PLUGIN_GRAFANA_IMAGE_RENDERER_RENDERING_IGNORE_HTTPS_ERRORS
+          value: "true"
         - name: GF_RENDERING_SERVER_URL
           value: http://image-renderer:8081/render
         - name: GF_RENDERING_CALLBACK_URL
@@ -78,4 +78,8 @@ spec:
           protocol: TCP
         env:
         - name: ENABLE_METRICS
+          value: "true"
+        - name: LOG_LEVEL
+          value: debug
+        - name: RENDERING_VERBOSE_LOGGING
           value: "true"
