@@ -16,8 +16,11 @@ spec:
     spec:
       containers:
       - name: grafana
-        image: grafana/grafana:5.2.0
+        image: grafana/grafana:latest
         imagePullPolicy: IfNotPresent
+        # volumeMounts:
+        # - name: config-volume
+        #   mountPath: /etc/grafana/custom.ini
         ports:
         - containerPort: 3000
           protocol: TCP
@@ -33,4 +36,50 @@ spec:
         - name: GF_SERVER_ROOT_URL
           # If you're only using the API Server proxy, set this value instead:
           # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
-          value: /
+          value: http://jmeter-grafana:3000/ #/
+        - name: GF_PLUGIN_GRAFANA_IMAGE_RENDERER_RENDERING_IGNORE_HTTPS_ERRORS
+          value: "true"
+        - name: GF_RENDERING_SERVER_URL
+          value: http://image-renderer:8081/render
+        - name: GF_RENDERING_CALLBACK_URL
+          value: http://jmeter-grafana:3000/
+        - name: GF_LOG_FILTERS
+          value: "rendering:debug" 
+      # volumes:
+      # - name: config-volume
+      #   configMap:
+      #    name: grafana-config    
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-renderer
+  labels:
+    app: image-renderer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: image-renderer
+  template:
+    metadata:
+      labels:
+        app: image-renderer
+    spec:
+      containers:
+      - name: image-renderer
+        image: grafana/grafana-image-renderer:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+          protocol: TCP
+        env:
+        - name: ENABLE_METRICS
+          value: "true"
+        - name: LOG_LEVEL
+          value: debug
+        - name: RENDERING_VERBOSE_LOGGING
+          value: "true"

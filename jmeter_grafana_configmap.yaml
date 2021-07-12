@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  labels:
+    app: jmeter-grafana
+data:
+  custom.ini: |
+    [plugin.grafana-image-renderer]
+      rendering_ignore_https_errors = true

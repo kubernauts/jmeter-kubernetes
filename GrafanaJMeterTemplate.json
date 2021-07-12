@@ -1541,7 +1541,7 @@
         "multi": false,
         "name": "retention",
         "options": [],
-        "query": "SHOW RETENTION POLICIES ON \"jmeterdb\"",
+        "query": "SHOW RETENTION POLICIES ON \"jmeter\"",
         "refresh": 1,
         "regex": "",
         "sort": 0,

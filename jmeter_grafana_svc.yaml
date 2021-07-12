@@ -10,4 +10,20 @@ spec:
       targetPort: 3000
   selector:
     app: jmeter-grafana
-  type: NodePort
+  type: LoadBalancer
+  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: image-renderer
+  labels:
+    app: image-renderer
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+  selector:
+    app: image-renderer
+  type: ClusterIP
