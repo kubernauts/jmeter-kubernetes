@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-slim
+FROM openjdk:8-jdk-buster
 MAINTAINER Kubernauts-lab
 		
 ARG JMETER_VERSION=5.0
