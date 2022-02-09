@@ -1,5 +1,5 @@
-FROM kubernautslabs/jmeter-base:latest
-MAINTAINER Kubernauts-lab
+FROM rcarrier/jmeter-base:latest
+MAINTAINER rcarrier
 		
 EXPOSE 1099 50000
 		
