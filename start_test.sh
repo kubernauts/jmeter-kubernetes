@@ -9,7 +9,9 @@ working_dir="`pwd`"
 tenant=`awk '{print $NF}' "$working_dir/tenant_export"`
 
 jmx="$1"
+params="${@:2}"
 [ -n "$jmx" ] || read -p 'Enter path to the jmx file ' jmx
+[ -n "$params" ] || read -p 'Enter additional CLI parameters (like -Jparam1=value) ' params
 
 if [ ! -f "$jmx" ];
 then
@@ -19,6 +21,8 @@ then
 fi
 
 test_name="$(basename "$jmx")"
+echo "Using test file: $test_name"
+echo "Additional parameters for jmeter: $params"
 
 #Get Master pod details
 
@@ -28,4 +32,4 @@ kubectl cp "$jmx" -n $tenant "$master_pod:/$test_name"
 
 ## Echo Starting Jmeter load test
 
-kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test "$test_name"
+kubectl exec -ti -n $tenant $master_pod -- /bin/bash /load_test "$test_name" $params
