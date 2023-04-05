@@ -1,9 +1,12 @@
 FROM rcarrier/jmeter-base:latest
 MAINTAINER rcarrier
-		
-EXPOSE 1099 50000
+
+ARG RMI_SERVER_PORT=50000
+ARG SERVER_PORT=1099
+
+EXPOSE 1099-1104 50000-50004
 		
 ENTRYPOINT $JMETER_HOME/bin/jmeter-server \
--Dserver.rmi.localport=50000 \
--Dserver_port=1099 \
+-Dserver.rmi.localport=${RMI_SERVER_PORT} \
+-Dserver_port=$SERVER_PORT \
 -Jserver.rmi.ssl.disable=true
